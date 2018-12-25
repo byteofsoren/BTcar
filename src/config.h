@@ -14,13 +14,19 @@
 #define RX_PIN 7
 #define TX_PIN 4
 
+/* States of the car */
+#define CAR_INIT 0
+#define CAR_ESTABLISH 1
+#define CAR_RUNNING 2
+#define CAR_DISCONNECT_REQUEST 4
+#define CAR_MAXSTATES 5
 
-// flags [ACC][enable system][enable steering][enable motor] if flags==0 then em stop.
-/* Flags macros to cut out flag bits */
-#define MOTOR_ENABLE(f) f & 0b1
-#define STEERING_ENABLE(f) (f >> 1)& 0b1
-#define SYS_ENABLE(f) (f >> 2)& 0b1
-#define SET_ACC(f) f |= (1 << 3)
+/* Servo settings */
+#define MOTOR_OFF 127
+#define STEERING_CENTER 127
+#define COMUNICATION_DELAY 600 // milliseconds
+
+
 
 /* Macro for testing the servos */
 /* servo: is the servo object */
