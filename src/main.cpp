@@ -121,12 +121,13 @@ int car_running(int a)
     {
         carResourses.motor.write(carSerial.motor_speed);
         carResourses.steering.write(carSerial.steering_angle);
+        write_serial(1);
     } else
     {
         carResourses.motor.write(MOTOR_OFF);
         carResourses.steering.write(STEERING_CENTER);
+        write_serial(1);
     }
-    write_serial(1);
     return 0;
 }
 

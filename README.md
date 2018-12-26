@@ -28,6 +28,19 @@ After that the system could be compiled and uploaded with the following command:
     $ pio run -v
     $ pio run -v -t upload
 
+## Repo structure
+The file structure of this repo is as follow:
+
+    README.md               # This file
+    src/                    # Source code for the project
+    demo_inteface/          # Uncompleted Python interface
+    test_inteface/          # Jupyter notebook to test parts
+    platformio.ini          # Config for platformio
+    # The folowing are Created by platformio
+    include/
+    lib/
+    test/
+
 # Code Configurations
 This project have an configuration file in `src/config.h` that tells the system where the motors and other pretrials is connected to the system. It also have important parameters like where the motor is standing still and the steering is centred.
 
