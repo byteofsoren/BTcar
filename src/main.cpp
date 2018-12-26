@@ -74,7 +74,6 @@ void write_serial(int acc)
 
 int car_init(int a)
 {
-    Serial.begin(9600);
     delay(500);
     write_serial(0);
     /* This part is blocking to wait for connection */
@@ -91,7 +90,7 @@ int car_establish(int a)
 {
     /* Also blocking until the steering angle and motor speed is set to STEERING_CENTER and MOTOR_OFF */
     /* This is do to safety */
-    while((carSerial.steering_angle != STEERING_CENTER) && (carSerial.motor_speed != MOTOR_OFF))
+    while((carSerial.steering_angle == STEERING_CENTER) && (carSerial.motor_speed == MOTOR_OFF))
     {
         read_serial();
         delay(10);
@@ -115,15 +114,19 @@ int car_establish(int a)
 int car_running(int a)
 {
     read_serial();
-    if ((FLAGS_ISDISCONNECT(carSerial.flags) == 1) && (carResourses.serialReadLastTime > COMUNICATION_DELAY)) {
+    if ((FLAGS_ISDISCONNECT(carSerial.flags) != 0) && (carResourses.serialReadLastTime > COMUNICATION_DELAY)) {
         /* Dis connect if ether disconnect request or the connection seams to be lost */
         carResourses.state = CAR_DISCONNECT_REQUEST;
     } else if (FLAGS_ISENABLED(carSerial.flags) == 1)
     {
         carResourses.motor.write(carSerial.motor_speed);
         carResourses.steering.write(carSerial.steering_angle);
-        write_serial(1);
+    } else
+    {
+        carResourses.motor.write(MOTOR_OFF);
+        carResourses.steering.write(STEERING_CENTER);
     }
+    write_serial(1);
     return 0;
 }
 
@@ -145,6 +148,7 @@ int car_disconnect(int a)
 
 void setup()
 {
+    Serial.begin(9600);
     fptr stateActions[CAR_MAXSTATES];
     int counter = 0;
     /* Assign functions to each state */
